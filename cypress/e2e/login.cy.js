@@ -1,8 +1,9 @@
 /// <reference types="cypress"/>
+const perfil = require('../fixtures/perfil.json')
 describe('funcionalidade: login',() =>{                    
     
 beforeEach(() => {
-cy.visit ('http://lojaebac.ebaconline.art.br/minha-conta/')
+cy.visit ('minha-conta')
 });
 
 it('Deve fazer login com sucesso', () => {
@@ -30,3 +31,29 @@ cy.get('.woocommerce-error').should('contain', 'Erro: A senha fornecida para o e
 
     
 });
+
+it('Deve fazer login com sucesso - usando massa de dados', () => {
+cy.get ('#username').type(perfil.usuário) 
+cy.get ('#password').type(perfil.senha)
+cy.get('.woocommerce-form > .button').click()
+cy.get('.woocommerce-MyAccount-content > :nth-child(2)').should('contain', 'Olá, franteste (não é franteste? Sair)')
+
+it.only('Deve fazer login com sucesso - Usando Fixtures', () => {
+cy.fixture('perfil').then ( dados => {
+cy.get ('#username').type(dados.usuário, {log: false}) 
+cy.get ('#password').type(dados.senha, { log: false})
+cy.get('.woocommerce-form > .button').click()
+cy.get('.woocommerce-MyAccount-content > :nth-child(2)').should('contain', 'Olá, franteste (não é franteste? Sair)')
+
+
+   })
+
+    
+
+
+    
+});
+
+    
+});
+})
